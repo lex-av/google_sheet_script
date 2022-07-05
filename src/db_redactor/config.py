@@ -3,6 +3,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     api_key: str = "unsecure_default"
+    cb_request_url: str = "http://www.cbr.ru/scripts/XML_daily.asp"
 
     class Config:
         env_prefix = ""

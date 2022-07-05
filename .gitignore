@@ -134,3 +134,6 @@ dmypy.json
 # DB files
 *.db
 *.sqlite
+
+# Other files
+today_rate.txt
