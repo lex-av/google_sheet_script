@@ -15,3 +15,12 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+DATABASE = {
+    "drivername": "postgres",
+    "host": "localhost",
+    "port": "32700",
+    "username": "user_app",
+    "password": "user_pwd_01",
+    "database": "spreadsheet",
+}
