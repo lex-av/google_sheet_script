@@ -82,8 +82,6 @@ def clear_local_table(db_session):
     present in remote table, then it was deleted from original google table.
 
     :param db_session: db_session: session obj from sqlalchemy.orm.sessionmaker
-    :param table_data: list of rows from google API
-    :param rub_rate: up to date rub rate
     """
 
     for current_order_id in db_session.query(LocalOrders.order_id):
