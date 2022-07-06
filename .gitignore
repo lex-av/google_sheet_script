@@ -137,3 +137,4 @@ dmypy.json
 
 # Other files
 today_rate.txt
+creds_google.json
