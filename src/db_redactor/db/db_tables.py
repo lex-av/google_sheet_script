@@ -11,7 +11,7 @@ class LocalOrders(DeclarativeBase):
 
     __tablename__ = "local_orders"
 
-    id = Column(Integer, autoincrement=True, primary_key=True)
+    id = Column(Integer, primary_key=True)
     order_id = Column(Integer)
     price_usd = Column(Float)
     price_rub = Column(Float)

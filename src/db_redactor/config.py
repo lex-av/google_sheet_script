@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     creds_filename: str = "creds_google.json"
     file_name: str = "today_rate.txt"
     spreadsheet_id: str
-    api_time_interval: int = 2  # Seconds between two calls to google API. Min value is 1 second (60 requests / min)
+    api_time_interval: float = 1.5  # Seconds between two calls to google API. Min value is 1 second (60 requests / min)
 
     class Config:
         env_prefix = ""
