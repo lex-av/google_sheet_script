@@ -61,7 +61,7 @@ def _write_dated_currency_rate(rate: float):
         # Moscow timezone
         date_time = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         date = date_time.date()
-        file.write(f"{rate}|{str(date)}")
+        file.write(f"{rate}|{date.strftime('%d.%m.%Y')}")
 
 
 def check_currency_rate():
@@ -82,7 +82,7 @@ def check_currency_rate():
             file_str = f.readline()
 
         date_str = file_str.split("|")[1]
-        past_date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+        past_date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
         current_date = datetime.date.today()
 
         if current_date > past_date:
