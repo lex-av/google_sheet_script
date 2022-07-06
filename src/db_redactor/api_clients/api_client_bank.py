@@ -3,10 +3,7 @@ import os
 import xml.etree.ElementTree as ET
 
 import requests
-
-from src.db_redactor.config import settings
-
-file_name = "today_rate.txt"
+from config import settings
 
 
 class CentralBankApiError(Exception):
@@ -57,7 +54,7 @@ def _write_dated_currency_rate(rate: float):
     :param rate: Currency rate
     """
 
-    with open(file_name, "w") as file:
+    with open(settings.file_name, "w") as file:
         # Moscow timezone
         date_time = datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         date = date_time.date()
@@ -75,10 +72,10 @@ def check_currency_rate():
     need_to_call_api = False
     files = os.listdir(os.getcwd())
 
-    if file_name not in files:
+    if settings.file_name not in files:
         need_to_call_api = True
     else:
-        with open(file_name) as f:
+        with open(settings.file_name) as f:
             file_str = f.readline()
 
         date_str = file_str.split("|")[1]

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Integer
+from sqlalchemy import Column, Date, Float, Integer
 
 from .base import DeclarativeBase
 
@@ -11,11 +11,11 @@ class LocalOrders(DeclarativeBase):
 
     __tablename__ = "local_orders"
 
-    id = Column("id", Integer, autoincrement=True, primary_key=True)
-    order_id = Column("order_id", Integer)
-    price_usd = Column("price_usd", Integer)
-    price_rub = Column("price_rub", Integer)
-    delivery_time = Column("delivery_time", Date)
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    order_id = Column(Integer)
+    price_usd = Column(Float)
+    price_rub = Column(Float)
+    delivery_time = Column(Date)
 
     def __repr__(self):
         return f"{self.code}"
@@ -27,13 +27,13 @@ class RemoteOrders(DeclarativeBase):
     editing main table
     """
 
-    __tablename__ = "local_orders"
+    __tablename__ = "remote_orders"
 
-    id = Column("id", Integer, autoincrement=True, primary_key=True)
-    order_id = Column("order_id", Integer)
-    price_usd = Column("price_usd", Integer)
-    price_rub = Column("price_rub", Integer)
-    delivery_time = Column("delivery_time", Date)
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    order_id = Column(Integer)
+    price_usd = Column(Float)
+    price_rub = Column(Float)
+    delivery_time = Column(Date)
 
     def __repr__(self):
         return f"{self.code}"

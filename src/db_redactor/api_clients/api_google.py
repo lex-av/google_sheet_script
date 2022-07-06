@@ -2,9 +2,8 @@ from typing import List
 
 import googleapiclient.discovery
 import httplib2
+from config import settings
 from oauth2client.service_account import ServiceAccountCredentials
-
-from src.db_redactor.config import settings
 
 
 def get_spreadsheet_table() -> List:
@@ -30,3 +29,7 @@ def get_spreadsheet_table() -> List:
     )
 
     return values["values"]
+
+
+if __name__ == "__main__":
+    get_spreadsheet_table()

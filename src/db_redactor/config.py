@@ -5,7 +5,9 @@ class Settings(BaseSettings):
     api_key: str = "unsecure_default"
     cb_request_url: str = "http://www.cbr.ru/scripts/XML_daily.asp"
     creds_filename: str = "creds_google.json"
+    file_name: str = "today_rate.txt"
     spreadsheet_id: str
+    api_time_interval: int = 2  # Seconds between two calls to google API. Min value is 1 second (60 requests / min)
 
     class Config:
         env_prefix = ""
@@ -17,7 +19,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 DATABASE = {
-    "drivername": "postgres",
+    "drivername": "postgresql+psycopg2",
     "host": "localhost",
     "port": "32700",
     "username": "user_app",
