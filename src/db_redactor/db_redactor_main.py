@@ -78,7 +78,7 @@ def update_local_table_with_new_rows(db_session, table_data, rub_rate):
 
 def clear_local_table(db_session):
     """
-    Deletes rows from local orders teble by order_id. If it is not
+    Deletes rows from local orders table by order_id. If it is not
     present in remote table, then it was deleted from original google table.
 
     :param db_session: db_session: session obj from sqlalchemy.orm.sessionmaker
