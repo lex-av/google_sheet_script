@@ -10,3 +10,12 @@ services:
       POSTGRES_USER:  user_app
       POSTGRES_PASSWORD:  user_pwd_01
       POSTGRES_DB: spreadsheet
+
+  db_redactor:
+    build:
+      context: .
+      dockerfile: db_redactor.Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
