@@ -2,7 +2,6 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    api_key: str = "unsecure_default"
     cb_request_url: str = "http://www.cbr.ru/scripts/XML_daily.asp"
     creds_filename: str = "creds_google.json"
     file_name: str = "today_rate.txt"
