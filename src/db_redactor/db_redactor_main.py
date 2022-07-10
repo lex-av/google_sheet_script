@@ -103,6 +103,7 @@ def main():
     """
 
     # DB init
+    time.sleep(3)  # Wait for postgresql to start in docker-compose
     DeclarativeBase.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()

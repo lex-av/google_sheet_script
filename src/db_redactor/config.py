@@ -20,8 +20,8 @@ settings = Settings()
 
 DATABASE = {
     "drivername": "postgresql+psycopg2",
-    "host": "localhost",
-    "port": "32700",
+    "host": "db",
+    "port": "5432",
     "username": "user_app",
     "password": "user_pwd_01",
     "database": "spreadsheet",

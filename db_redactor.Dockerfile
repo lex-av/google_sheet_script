@@ -6,6 +6,6 @@ COPY src/db_redactor/ /usr/app/
 WORKDIR /usr/app/
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 CMD ["python", "db_redactor_main.py"]
