@@ -1,4 +1,5 @@
 import datetime
+import json
 import time
 from typing import List
 
@@ -7,7 +8,18 @@ from api_clients.api_google import get_spreadsheet_table
 from config import settings
 from db.base import DeclarativeBase, engine
 from db.db_tables import LocalOrders, RemoteOrders
+from pydantic import BaseModel, validator
 from sqlalchemy.orm import sessionmaker
+
+
+class TableRow(BaseModel):
+    order_id: int
+    price_usd: int
+    delivery_time: datetime.date
+
+    @validator("delivery_time", pre=True)
+    def parse_delivery_time(cls, value):
+        return datetime.datetime.strptime(value, "%d.%m.%Y").date()
 
 
 def google_data_row_parse(row: List, rub_rate: float):
@@ -20,12 +32,37 @@ def google_data_row_parse(row: List, rub_rate: float):
     :return:
     """
 
-    order_id = (row[1],)
-    price_usd = (row[2],)
+    order_id = row[1]
+    price_usd = row[2]
     price_rub = (float(row[2]) * rub_rate,)
     delivery_time = datetime.datetime.strptime(row[3], "%d.%m.%Y")
 
-    return order_id, price_usd, price_rub, delivery_time
+    return (order_id, price_usd, price_rub, delivery_time)
+
+
+def verify_table_row(row: List) -> bool:
+    """
+    Validates table row from google to write it into database.
+    Checks if row is finished (correct length) and has correct values (validation)
+
+    :param row: dict of python, converted to str
+    :return:
+    """
+
+    if len(row) < 4:
+        return False
+
+    order_id = row[1]
+    price_usd = row[2]
+    delivery_time = row[3]
+
+    json_row = json.dumps({"order_id": order_id, "price_usd": price_usd, "delivery_time": delivery_time})
+
+    try:
+        TableRow.parse_raw(json_row)
+        return True
+    except ValueError:
+        return False
 
 
 def update_remote_table(db_session, table_data, rub_rate):
@@ -41,7 +78,10 @@ def update_remote_table(db_session, table_data, rub_rate):
     db_session.query(RemoteOrders).delete()
     db_session.commit()
     for prime_id, row in enumerate(table_data, start=1):
-        order_id, price_usd, price_rub, delivery_time = google_data_row_parse(row, rub_rate)
+        if verify_table_row(row):
+            order_id, price_usd, price_rub, delivery_time = google_data_row_parse(row, rub_rate)
+        else:
+            continue
         remote_row = RemoteOrders(
             id=prime_id,
             order_id=order_id,
@@ -62,7 +102,10 @@ def update_local_table_with_new_rows(db_session, table_data, rub_rate):
     :param rub_rate: up to date rub rate
     """
     for row in table_data:
-        order_id, price_usd, price_rub, delivery_time = google_data_row_parse(row, rub_rate)
+        if verify_table_row(row):
+            order_id, price_usd, price_rub, delivery_time = google_data_row_parse(row, rub_rate)
+        else:
+            continue
         row_exists = db_session.query(LocalOrders.order_id).filter_by(order_id=order_id).first() is not None
 
         if not row_exists:
@@ -123,14 +166,12 @@ def main():
 
         # Updating secondary remote orders table with old data removal
         update_remote_table(session, google_data, rub_rate)
-        print("Updated remote")
 
         # Adding only new entries to local orders table
         update_local_table_with_new_rows(session, google_data, rub_rate)
 
         # Deleting rows from local orders table, that are already not present in google table
         clear_local_table(session)
-        print("Updated local")
 
         # Time delay between requests if needed
         after_request = time.time()
