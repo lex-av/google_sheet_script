@@ -117,6 +117,7 @@ def main():
     # Main loop for db editing/refreshing
     while True:
         # Fetching data from google API
+        before_request = time.time()
         google_data = get_spreadsheet_table()
         google_data.pop(0)  # Skip table header
 
@@ -131,7 +132,11 @@ def main():
         clear_local_table(session)
         print("Updated local")
 
-        time.sleep(2)
+        # Time delay between requests if needed
+        after_request = time.time()
+        delta = after_request - before_request
+        if delta < settings.api_time_interval:
+            time.sleep(settings.api_time_interval - delta)
 
 
 if __name__ == "__main__":
