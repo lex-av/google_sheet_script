@@ -19,3 +19,6 @@
 Далее приложение можно поднять при помощи команды cmd docker-compose up --build в корне проекта
 
 Конфигурацию приложения можно осуществить с помощью src/db_redactor/config.py.
+
+Ссылка на мой документ в google sheets:
+https://docs.google.com/spreadsheets/d/1JBd3NtdId-K6GRxJ6smXXwadJaFkUv-f4vxW5AQBRYA/edit#gid=0
